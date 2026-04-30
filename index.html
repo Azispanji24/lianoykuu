@@ -941,72 +941,105 @@
       });
 
       // AUDIO
-      let ac = null,
-        mo = false;
-      function tra() {
-        ac = new (window.AudioContext || window.webkitAudioContext)();
-        pam();
-        mo = true;
-        document.getElementById("ab").textContent = "🎵 ON";
-      }
-      function pam() {
-        const m = ac.createGain();
-        m.gain.setValueAtTime(0.05, ac.currentTime);
-        m.connect(ac.destination);
-        const rv = ac.createConvolver();
-        const bl = ac.sampleRate * 2;
-        const b = ac.createBuffer(2, bl, ac.sampleRate);
-        for (let c = 0; c < 2; c++) {
-          const d = b.getChannelData(c);
-          for (let i = 0; i < bl; i++)
-            d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bl, 2);
-        }
-        rv.buffer = b;
-        rv.connect(m);
-        const nt = [261.6, 329.6, 392, 523.2, 659.3];
-        function n(f, t, d) {
-          const o = ac.createOscillator(),
-            g = ac.createGain();
-          o.type = "sine";
-          o.frequency.setValueAtTime(f, t);
-          g.gain.setValueAtTime(0, t);
-          g.gain.linearRampToValueAtTime(0.32, t + 0.08);
-          g.gain.exponentialRampToValueAtTime(0.001, t + d);
-          o.connect(g);
-          g.connect(rv);
-          o.start(t);
-          o.stop(t + d);
-        }
-        function lp(st) {
-          const bt = 0.65;
-          [0, 2, 1, 4, 3, 2, 0, 3].forEach((ni, i) => {
-            n(nt[ni], st + i * bt, bt * 1.3);
-            n(nt[ni] / 2, st + i * bt, bt * 2);
-          });
-          const l = 8 * bt;
-          setTimeout(
-            () => {
-              if (mo && ac) lp(ac.currentTime + 0.05);
-            },
-            (l - 0.4) * 1000,
-          );
-        }
-        lp(ac.currentTime + 0.1);
-      }
+      //   let ac = null,
+      //     mo = false;
+      //   function tra() {
+      //     ac = new (window.AudioContext || window.webkitAudioContext)();
+      //     pam();
+      //     mo = true;
+      //     document.getElementById("ab").textContent = "🎵 ON";
+      //   }
+      //   function pam() {
+      //     const m = ac.createGain();
+      //     m.gain.setValueAtTime(0.05, ac.currentTime);
+      //     m.connect(ac.destination);
+      //     const rv = ac.createConvolver();
+      //     const bl = ac.sampleRate * 2;
+      //     const b = ac.createBuffer(2, bl, ac.sampleRate);
+      //     for (let c = 0; c < 2; c++) {
+      //       const d = b.getChannelData(c);
+      //       for (let i = 0; i < bl; i++)
+      //         d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bl, 2);
+      //     }
+      //     rv.buffer = b;
+      //     rv.connect(m);
+      //     const nt = [261.6, 329.6, 392, 523.2, 659.3];
+      //     function n(f, t, d) {
+      //       const o = ac.createOscillator(),
+      //         g = ac.createGain();
+      //       o.type = "sine";
+      //       o.frequency.setValueAtTime(f, t);
+      //       g.gain.setValueAtTime(0, t);
+      //       g.gain.linearRampToValueAtTime(0.32, t + 0.08);
+      //       g.gain.exponentialRampToValueAtTime(0.001, t + d);
+      //       o.connect(g);
+      //       g.connect(rv);
+      //       o.start(t);
+      //       o.stop(t + d);
+      //     }
+      //     function lp(st) {
+      //       const bt = 0.65;
+      //       [0, 2, 1, 4, 3, 2, 0, 3].forEach((ni, i) => {
+      //         n(nt[ni], st + i * bt, bt * 1.3);
+      //         n(nt[ni] / 2, st + i * bt, bt * 2);
+      //       });
+      //       const l = 8 * bt;
+      //       setTimeout(
+      //         () => {
+      //           if (mo && ac) lp(ac.currentTime + 0.05);
+      //         },
+      //         (l - 0.4) * 1000,
+      //       );
+      //     }
+      //     lp(ac.currentTime + 0.1);
+      //   }
+      //   document.getElementById("ab").addEventListener("click", () => {
+      //     if (!ac) {
+      //       tra();
+      //     } else if (mo) {
+      //       ac.suspend();
+      //       mo = false;
+      //       document.getElementById("ab").textContent = "🎵 OFF";
+      //     } else {
+      //       ac.resume();
+      //       mo = true;
+      //       document.getElementById("ab").textContent = "🎵 ON";
+      //     }
+      //     pc2();
+      //   });
+
+      // AUDIO
+      const audio = new Audio("assets/music/Download (9).mp3"); // sesuaikan nama file
+      audio.loop = true;
+      audio.volume = 0.5;
+      let mo = false;
+
       document.getElementById("ab").addEventListener("click", () => {
-        if (!ac) {
-          tra();
-        } else if (mo) {
-          ac.suspend();
-          mo = false;
-          document.getElementById("ab").textContent = "🎵 OFF";
-        } else {
-          ac.resume();
+        if (!mo) {
+          audio.play();
           mo = true;
           document.getElementById("ab").textContent = "🎵 ON";
+        } else {
+          audio.pause();
+          mo = false;
+          document.getElementById("ab").textContent = "🎵 OFF";
         }
         pc2();
       });
+
+      // Auto-play saat user pertama kali klik layar
+      document.addEventListener(
+        "click",
+        function startAudio() {
+          if (!mo) {
+            audio.play();
+            mo = true;
+            document.getElementById("ab").textContent = "🎵 ON";
+          }
+          document.removeEventListener("click", startAudio);
+        },
+        { once: true },
+      );
 
       // CLICK SOUND
       function pc2() {
