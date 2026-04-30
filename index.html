@@ -400,6 +400,32 @@
         text-align: center;
         margin-bottom: 2.5rem;
       }
+
+      body.dark {
+        --bg: #1e0e1a;
+        --cb: #2d1526;
+        --td: #f891c3;
+        --tm: #aa5884;
+        --tl: #a07090;
+        --pk: #c47090;
+        --pkd: #e96b9b;
+        --lv: #6a3d80;
+      }
+
+      body.dark #s2 {
+        background: linear-gradient(
+          160deg,
+          #2a1020 0%,
+          #1a1030 100%
+        ) !important;
+      }
+
+      body.dark #s3 {
+        background:
+          radial-gradient(ellipse at 30% 70%, #3a1a1060 0%, transparent 60%),
+          radial-gradient(ellipse at 80% 20%, #2a1a2060 0%, transparent 50%),
+          var(--bg) !important;
+      }
       .cbs {
         display: flex;
         gap: 1.2rem;
@@ -867,26 +893,35 @@
       }
 
       // DARK MODE
+      //   let dk = false;
+      //   document.getElementById("tb").addEventListener("click", () => {
+      //     dk = !dk;
+      //     document.body.style.background = dk ? "#1e0e1a" : "";
+      //     document.getElementById("tb").textContent = dk ? "☀️" : "🌙";
+      //     pc2();
+      //   });
+
+      //   // EASTER EGG
+      //   let ec = 0;
+      //   document.getElementById("et").addEventListener("click", () => {
+      //     ec++;
+      //     if (ec >= 3) {
+      //       const e = document.getElementById("ee");
+      //       e.style.display = "block";
+      //       setTimeout(() => {
+      //         e.style.display = "none";
+      //         ec = 0;
+      //       }, 4000);
+      //     }
+      //   });
+
+      // DARK MODE
       let dk = false;
       document.getElementById("tb").addEventListener("click", () => {
         dk = !dk;
-        document.body.style.background = dk ? "#1e0e1a" : "";
+        document.body.classList.toggle("dark", dk);
         document.getElementById("tb").textContent = dk ? "☀️" : "🌙";
         pc2();
-      });
-
-      // EASTER EGG
-      let ec = 0;
-      document.getElementById("et").addEventListener("click", () => {
-        ec++;
-        if (ec >= 3) {
-          const e = document.getElementById("ee");
-          e.style.display = "block";
-          setTimeout(() => {
-            e.style.display = "none";
-            ec = 0;
-          }, 4000);
-        }
       });
 
       // MOUSE TRAIL
