@@ -404,12 +404,19 @@
       body.dark {
         --bg: #1e0e1a;
         --cb: #2d1526;
-        --td: #f891c3;
-        --tm: #aa5884;
+        --td: #f5dce8;
+        --tm: #d4a8c0;
         --tl: #a07090;
         --pk: #c47090;
         --pkd: #e96b9b;
         --lv: #6a3d80;
+      }
+
+      /* Override semua section background di dark mode */
+      body.dark #s1 {
+        background:
+          radial-gradient(ellipse at 60% 30%, #3d1530 0%, #1e0e1a 65%),
+          radial-gradient(ellipse at 20% 80%, #2a1040 0%, transparent 50%) !important;
       }
 
       body.dark #s2 {
@@ -422,9 +429,41 @@
 
       body.dark #s3 {
         background:
-          radial-gradient(ellipse at 30% 70%, #3a1a1060 0%, transparent 60%),
-          radial-gradient(ellipse at 80% 20%, #2a1a2060 0%, transparent 50%),
-          var(--bg) !important;
+          radial-gradient(ellipse at 30% 70%, #2a150f 0%, transparent 60%),
+          radial-gradient(ellipse at 80% 20%, #2a1020 0%, transparent 50%),
+          #1e0e1a !important;
+      }
+
+      body.dark #s4 {
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          #2d1a10 0%,
+          #1e0e1a 70%
+        ) !important;
+      }
+
+      body.dark #s5 {
+        background: radial-gradient(
+          ellipse at 50% 30%,
+          #3d1530 0%,
+          #1e0e1a 65%
+        ) !important;
+      }
+
+      /* Card di dark mode */
+      body.dark .mc,
+      body.dark .ic {
+        background: #2d1526 !important;
+        border-color: rgba(249, 168, 201, 0.15) !important;
+      }
+
+      /* Blob di dark mode biar ga terlalu terang */
+      body.dark .blob {
+        background: radial-gradient(
+          circle,
+          #3d152a40 0%,
+          transparent 70%
+        ) !important;
       }
       .cbs {
         display: flex;
