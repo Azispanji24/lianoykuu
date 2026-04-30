@@ -238,17 +238,19 @@
         transform: scale(1.1) translateY(-4px);
       }
       .bn {
-        padding: 0.9rem 2rem;
+        padding: 0.9rem 1.2rem;
         border-radius: 50px;
         border: 2px solid var(--pk);
         font-family: "Nunito", sans-serif;
-        font-size: 1.05rem;
+        font-size: 0.95rem; /* kecilkan font biar muat */
         font-weight: 700;
         cursor: pointer;
         background: transparent;
         color: var(--pkd);
         white-space: nowrap;
         transition: transform 0.15s;
+        max-width: 220px; /* batasi lebar maksimal */
+        text-align: center;
       }
       /* S2 */
       #s2 {
@@ -574,14 +576,14 @@
       /* FADE IN */
       .fi {
         opacity: 0;
-        transform: translateY(28px);
+        /* transform: translateY(28px); */
         transition:
           opacity 0.65s ease,
           transform 0.65s ease;
       }
       .fi.v {
         opacity: 1;
-        transform: translateY(0);
+        /* transform: translateY(0); */
       }
       @media (max-width: 480px) {
         .mc {
@@ -676,7 +678,7 @@
         <div class="ic">
           <span class="ico">📅</span>
           <div class="lbl">Tanggal</div>
-          <div class="val">Senin,<br />4 April 2026</div>
+          <div class="val">Hari ini,<br />4 April 2026</div>
         </div>
         <div class="ic">
           <span class="ico">⏰</span>
@@ -705,7 +707,7 @@
       <h2 class="ct fi">Sooo... gimana?</h2>
       <p class="cs fi">kalo gak mau tetep aku culikk😎, hahaha</p>
       <div class="cbs fi">
-        <button class="by" onclick="hy()">Mau banget ❤️</button>
+        <button class="by" onclick="hy()">jadi dongss ❤️</button>
         <button class="bn" id="bn">Nggak dulu</button>
       </div>
       <p id="nc"></p>
@@ -798,7 +800,7 @@
       const tt = document.getElementById("tt");
       const ts = [
         "aku ada sesuatu nih... ",
-        "penting banget, hahaha",
+        "inget janji kita sore ini?...😏",
         "baca dulu ya, jangan di-skip! 😤",
       ];
       let ti = 0,
@@ -871,28 +873,48 @@
       const nc = [
         "ett gak kena, wkwk",
         "tangkep lagi dungsss",
-        "bener ini gak bisa nangkep aku?, haha",
-        "gak kena bleee",
+        "ett gak kena, wkwk",
+        "gak kena bleee😝",
         "nyari aku?",
-        "tak dapat tangkap tak dapat tangkap, haha",
-        "bleee gak kena",
+        "tak dapat tangkap, haha",
+        "bleee😝 gak kena",
       ];
+
       const bn = document.getElementById("bn");
+
       function mvbn() {
-        const vw = window.innerWidth - 200,
-          vh = window.innerHeight - 80;
-        const rx = 40 + Math.random() * Math.max(vw, 40);
-        const ry = 40 + Math.random() * Math.max(vh, 40);
+        // Set dulu ke pojok kiri atas supaya bisa diukur
         bn.style.position = "fixed";
-        bn.style.left = rx + "px";
-        bn.style.top = ry + "px";
-        bn.style.zIndex = "500";
-        nhc = Math.min(nhc + 1, nc.length - 1);
-        bn.textContent = nc[nhc];
-        if (nhc > 0)
-          document.getElementById("nc").textContent =
-            `(Udah ${nhc}x kabur... owh gitu, bandel?😏, masih teken tombol gak mau?)`;
+        bn.style.left = "0px";
+        bn.style.top = "0px";
+        bn.style.right = "auto";
+        bn.style.bottom = "auto";
+
+        // Ukur SETELAH browser render ulang
+        requestAnimationFrame(() => {
+          const btnW = bn.getBoundingClientRect().width;
+          const btnH = bn.getBoundingClientRect().height;
+          const pad = 24;
+
+          const safeMaxX = Math.max(window.innerWidth - btnW - pad, pad);
+          const safeMaxY = Math.max(window.innerHeight - btnH - pad, pad);
+
+          const rx = pad + Math.random() * (safeMaxX - pad);
+          const ry = pad + Math.random() * (safeMaxY - pad);
+
+          bn.style.left = rx + "px";
+          bn.style.top = ry + "px";
+          bn.style.zIndex = "500";
+
+          nhc = Math.min(nhc + 1, nc.length - 1);
+          bn.textContent = nc[nhc];
+
+          if (nhc > 0)
+            document.getElementById("nc").textContent =
+              `(Udah ${nhc}x kabur... owh gitu, bandel?😏, masih teken tombol gak mau?)`;
+        });
       }
+
       bn.addEventListener("mouseover", mvbn);
       bn.addEventListener("touchstart", (e) => {
         e.preventDefault();
@@ -932,29 +954,6 @@
       }
 
       // DARK MODE
-      //   let dk = false;
-      //   document.getElementById("tb").addEventListener("click", () => {
-      //     dk = !dk;
-      //     document.body.style.background = dk ? "#1e0e1a" : "";
-      //     document.getElementById("tb").textContent = dk ? "☀️" : "🌙";
-      //     pc2();
-      //   });
-
-      //   // EASTER EGG
-      //   let ec = 0;
-      //   document.getElementById("et").addEventListener("click", () => {
-      //     ec++;
-      //     if (ec >= 3) {
-      //       const e = document.getElementById("ee");
-      //       e.style.display = "block";
-      //       setTimeout(() => {
-      //         e.style.display = "none";
-      //         ec = 0;
-      //       }, 4000);
-      //     }
-      //   });
-
-      // DARK MODE
       let dk = false;
       document.getElementById("tb").addEventListener("click", () => {
         dk = !dk;
@@ -978,74 +977,6 @@
         });
         setTimeout(() => s.remove(), 700);
       });
-
-      // AUDIO
-      //   let ac = null,
-      //     mo = false;
-      //   function tra() {
-      //     ac = new (window.AudioContext || window.webkitAudioContext)();
-      //     pam();
-      //     mo = true;
-      //     document.getElementById("ab").textContent = "🎵 ON";
-      //   }
-      //   function pam() {
-      //     const m = ac.createGain();
-      //     m.gain.setValueAtTime(0.05, ac.currentTime);
-      //     m.connect(ac.destination);
-      //     const rv = ac.createConvolver();
-      //     const bl = ac.sampleRate * 2;
-      //     const b = ac.createBuffer(2, bl, ac.sampleRate);
-      //     for (let c = 0; c < 2; c++) {
-      //       const d = b.getChannelData(c);
-      //       for (let i = 0; i < bl; i++)
-      //         d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bl, 2);
-      //     }
-      //     rv.buffer = b;
-      //     rv.connect(m);
-      //     const nt = [261.6, 329.6, 392, 523.2, 659.3];
-      //     function n(f, t, d) {
-      //       const o = ac.createOscillator(),
-      //         g = ac.createGain();
-      //       o.type = "sine";
-      //       o.frequency.setValueAtTime(f, t);
-      //       g.gain.setValueAtTime(0, t);
-      //       g.gain.linearRampToValueAtTime(0.32, t + 0.08);
-      //       g.gain.exponentialRampToValueAtTime(0.001, t + d);
-      //       o.connect(g);
-      //       g.connect(rv);
-      //       o.start(t);
-      //       o.stop(t + d);
-      //     }
-      //     function lp(st) {
-      //       const bt = 0.65;
-      //       [0, 2, 1, 4, 3, 2, 0, 3].forEach((ni, i) => {
-      //         n(nt[ni], st + i * bt, bt * 1.3);
-      //         n(nt[ni] / 2, st + i * bt, bt * 2);
-      //       });
-      //       const l = 8 * bt;
-      //       setTimeout(
-      //         () => {
-      //           if (mo && ac) lp(ac.currentTime + 0.05);
-      //         },
-      //         (l - 0.4) * 1000,
-      //       );
-      //     }
-      //     lp(ac.currentTime + 0.1);
-      //   }
-      //   document.getElementById("ab").addEventListener("click", () => {
-      //     if (!ac) {
-      //       tra();
-      //     } else if (mo) {
-      //       ac.suspend();
-      //       mo = false;
-      //       document.getElementById("ab").textContent = "🎵 OFF";
-      //     } else {
-      //       ac.resume();
-      //       mo = true;
-      //       document.getElementById("ab").textContent = "🎵 ON";
-      //     }
-      //     pc2();
-      //   });
 
       // AUDIO
       const audio = new Audio("assets/music/Download (9).mp3"); // sesuaikan nama file
