@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@600;700&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --pk: #f9a8c9;
+        --pkd: #e96b9b;
+        --pe: #ffd6c0;
+        --ped: #f4a07a;
+        --lv: #e8d5f5;
+        --lvd: #b48edd;
+        --td: #3d1f3a;
+        --tm: #7a4a6b;
+        --tl: #c49aae;
+        --bg: #fff8f0;
+        --cb: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: var(--td);
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      #pc {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      #ab {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 999;
+        background: var(--cb);
+        border: 2px solid var(--lv);
+        border-radius: 50px;
+        padding: 0.35rem 0.8rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(180, 142, 221, 0.25);
+        transition: transform 0.2s;
+        font-family: "Nunito", sans-serif;
+      }
+      #ab:hover {
+        transform: scale(1.1);
+      }
+      #tb {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 999;
+        background: var(--cb);
+        border: 2px solid var(--pk);
+        border-radius: 50px;
+        padding: 0.35rem 0.8rem;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(233, 107, 155, 0.25);
+        transition: transform 0.2s;
+        font-family: "Nunito", sans-serif;
+      }
+      #tb:hover {
+        transform: scale(1.1);
+      }
+      #nd {
+        position: fixed;
+        right: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 100;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--tl);
+        transition:
+          background 0.3s,
+          transform 0.3s;
+        cursor: pointer;
+      }
+      .dot.active {
+        background: var(--pkd);
+        transform: scale(1.5);
+      }
+      section {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 1.5rem;
+        transition: opacity 0.5s;
+      }
+      /* S1 */
+      #s1 {
+        background:
+          radial-gradient(ellipse at 60% 30%, #ffe0ef 0%, var(--bg) 65%),
+          radial-gradient(ellipse at 20% 80%, #e8d5f5 0%, transparent 50%);
+      }
+      .blob {
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        background: radial-gradient(circle, #ffd6c060 0%, transparent 70%);
+        border-radius: 63% 37% 54% 46%/55% 48% 52% 45%;
+        animation:
+          blobM 8s ease-in-out infinite,
+          blobF 6s ease-in-out infinite;
+        z-index: -1;
+      }
+      @keyframes blobM {
+        0%,
+        100% {
+          border-radius: 63% 37% 54% 46%/55% 48% 52% 45%;
+        }
+        33% {
+          border-radius: 40% 60% 30% 70%/50% 60% 40% 50%;
+        }
+        66% {
+          border-radius: 50% 50% 60% 40%/30% 70% 30% 70%;
+        }
+      }
+      @keyframes blobF {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-18px) scale(1.04);
+        }
+      }
+      .oi {
+        text-align: center;
+        max-width: 500px;
+      }
+      .ef {
+        display: inline-block;
+        font-size: 3.2rem;
+        animation: fy 3s ease-in-out infinite;
+        margin-bottom: 1rem;
+      }
+      @keyframes fy {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      .ot {
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        color: var(--pkd);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+      .tw {
+        font-size: clamp(0.95rem, 3vw, 1.2rem);
+        color: var(--tm);
+        margin-bottom: 2.5rem;
+        min-height: 2em;
+      }
+      .cur {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        background: var(--pkd);
+        margin-left: 2px;
+        animation: bl 0.8s step-end infinite;
+        vertical-align: middle;
+      }
+      @keyframes bl {
+        50% {
+          opacity: 0;
+        }
+      }
+      /* BUTTONS */
+      .bm {
+        display: inline-block;
+        padding: 0.9rem 2.2rem;
+        border-radius: 50px;
+        border: none;
+        font-family: "Nunito", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        background: linear-gradient(135deg, var(--pkd), var(--ped));
+        color: #fff;
+        box-shadow: 0 8px 26px rgba(233, 107, 155, 0.4);
+        transition:
+          transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.18s;
+      }
+      .bm:hover {
+        transform: scale(1.08) translateY(-3px);
+        box-shadow: 0 14px 34px rgba(233, 107, 155, 0.5);
+      }
+      .bm:active {
+        transform: scale(0.96);
+      }
+      .by {
+        padding: 0.9rem 2rem;
+        border-radius: 50px;
+        border: none;
+        font-family: "Nunito", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        background: linear-gradient(135deg, #e96b9b, #f4a07a);
+        color: #fff;
+        box-shadow: 0 8px 22px rgba(233, 107, 155, 0.45);
+        transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .by:hover {
+        transform: scale(1.1) translateY(-4px);
+      }
+      .bn {
+        padding: 0.9rem 2rem;
+        border-radius: 50px;
+        border: 2px solid var(--pk);
+        font-family: "Nunito", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        background: transparent;
+        color: var(--pkd);
+        white-space: nowrap;
+        transition: transform 0.15s;
+      }
+      /* S2 */
+      #s2 {
+        display: none;
+        background: linear-gradient(160deg, #fff0f7 0%, #f0e8ff 100%);
+      }
+      .mc {
+        background: var(--cb);
+        border-radius: 28px;
+        padding: 2.5rem 2rem;
+        max-width: 540px;
+        width: 100%;
+        box-shadow: 0 20px 55px rgba(180, 100, 160, 0.14);
+        border: 1.5px solid rgba(249, 168, 201, 0.3);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .mc::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, #ffe0ef 0%, transparent 70%);
+        border-radius: 50%;
+      }
+      .mc h2 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.4rem, 4vw, 2rem);
+        color: var(--pkd);
+        margin-bottom: 1.3rem;
+        font-style: italic;
+      }
+      .mc p {
+        font-size: 1rem;
+        line-height: 1.85;
+        color: var(--tm);
+        margin-bottom: 1rem;
+      }
+      .dh {
+        font-size: 1.8rem;
+        letter-spacing: 0.5rem;
+        margin: 1rem 0;
+        display: block;
+      }
+      /* S3 */
+      #s3 {
+        display: none;
+        background:
+          radial-gradient(ellipse at 30% 70%, #ffe0c060 0%, transparent 60%),
+          radial-gradient(ellipse at 80% 20%, #ffd6e060 0%, transparent 50%),
+          var(--bg);
+      }
+      .it {
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(1.9rem, 5vw, 3.2rem);
+        color: var(--pkd);
+        text-align: center;
+        margin-bottom: 0.4rem;
+      }
+      .is {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        color: var(--tl);
+        text-align: center;
+        margin-bottom: 2.5rem;
+        font-size: 1.05rem;
+      }
+      .ics {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 680px;
+        width: 100%;
+      }
+      .ic {
+        background: var(--cb);
+        border-radius: 20px;
+        padding: 1.6rem 1.8rem;
+        flex: 1 1 150px;
+        min-width: 130px;
+        max-width: 190px;
+        text-align: center;
+        box-shadow: 0 8px 28px rgba(180, 100, 160, 0.11);
+        border: 1.5px solid rgba(249, 168, 201, 0.22);
+        transition:
+          transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.25s;
+        position: relative;
+        overflow: hidden;
+      }
+      .ic::after {
+        content: "";
+        position: absolute;
+        bottom: -28px;
+        left: -28px;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle, var(--pe) 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0.5;
+      }
+      .ic:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 18px 42px rgba(180, 100, 160, 0.2);
+      }
+      .ic .ico {
+        font-size: 2rem;
+        margin-bottom: 0.7rem;
+        display: block;
+      }
+      .ic .lbl {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 0.75rem;
+        color: var(--tl);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.35rem;
+      }
+      .ic .val {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--td);
+        line-height: 1.4;
+      }
+      /* S4 */
+      #s4 {
+        display: none;
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          #ffd6e050 0%,
+          var(--bg) 70%
+        );
+      }
+      .ct {
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(1.9rem, 5vw, 3rem);
+        color: var(--pkd);
+        text-align: center;
+        margin-bottom: 0.5rem;
+      }
+      .cs {
+        font-size: 1rem;
+        color: var(--tl);
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      .cbs {
+        display: flex;
+        gap: 1.2rem;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      #nc {
+        margin-top: 1.8rem;
+        color: var(--tl);
+        font-size: 0.88rem;
+        min-height: 1.5em;
+        text-align: center;
+      }
+      /* S5 */
+      #s5 {
+        display: none;
+        background: radial-gradient(
+          ellipse at 50% 30%,
+          #ffe0ef 0%,
+          var(--bg) 65%
+        );
+        text-align: center;
+      }
+      .fe {
+        font-size: 3.8rem;
+        animation: bi 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        display: block;
+        margin-bottom: 1rem;
+      }
+      @keyframes bi {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .ft {
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(1.9rem, 5vw, 3.2rem);
+        color: var(--pkd);
+        margin-bottom: 1rem;
+      }
+      .fm {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(0.95rem, 3vw, 1.25rem);
+        color: var(--tm);
+        max-width: 460px;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+      .fn {
+        font-size: 0.88rem;
+        color: var(--tl);
+        margin-top: 1.2rem;
+      }
+      /* CONFETTI */
+      .cp {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        animation: cf linear forwards;
+      }
+      @keyframes cf {
+        0% {
+          transform: translateY(-20px) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+      /* EASTER EGG */
+      #ee {
+        display: none;
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--cb);
+        border: 2px solid var(--lv);
+        border-radius: 14px;
+        padding: 0.9rem 1.3rem;
+        font-size: 0.9rem;
+        color: var(--tm);
+        box-shadow: 0 8px 26px rgba(180, 142, 221, 0.28);
+        z-index: 998;
+        text-align: center;
+        max-width: 280px;
+        animation: su 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes su {
+        from {
+          transform: translateX(-50%) translateY(40px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+        }
+      }
+      /* FADE IN */
+      .fi {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .fi.v {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @media (max-width: 480px) {
+        .mc {
+          padding: 1.8rem 1.2rem;
+        }
+        .ics {
+          gap: 0.7rem;
+        }
+        .ic {
+          min-width: 120px;
+          padding: 1.3rem 0.9rem;
+        }
+        .cbs {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="pc"></canvas>
+    <button id="ab">🎵 Musik</button>
+    <button id="tb">🌙</button>
+    <nav id="nd">
+      <div class="dot active" data-s="0"></div>
+      <div class="dot" data-s="1"></div>
+      <div class="dot" data-s="2"></div>
+      <div class="dot" data-s="3"></div>
+      <div class="dot" data-s="4"></div>
+    </nav>
+    <div id="ee">
+      🌸 Kamu nemu Easter Egg-nya! Kamu emang paling spesial~ ❤️
+    </div>
+
+    <!-- S1 -->
+    <section id="s1">
+      <div class="blob"></div>
+      <div class="oi">
+        <div class="ef">💌</div>
+        <h1 class="ot">Hai kamu...</h1>
+        <div class="tw"><span id="tt"></span><span class="cur"></span></div>
+        <button class="bm" onclick="gs(1)">Klik di sini ✨</button>
+      </div>
+      <div
+        id="et"
+        style="
+          position: absolute;
+          bottom: 1rem;
+          left: 1rem;
+          width: 60px;
+          height: 60px;
+          cursor: default;
+        "
+      ></div>
+    </section>
+
+    <!-- S2 -->
+    <section id="s2">
+      <div class="mc fi">
+        <h2>"Aku ada sesuatu yang pengen aku bilang..." 🥺</h2>
+        <p>
+          Jadi gini... aku udah lama mikirin ini. Sambil rebahan, sambil scroll
+          sosmed, bahkan sambil makan indomie jam 12 malem. 😅
+        </p>
+        <span class="dh">🌸 💕 🌸</span>
+        <p>
+          Dan kesimpulannya cuma satu:<br /><strong
+            style="
+              color: var(--pkd);
+              font-family: &quot;Playfair Display&quot;, serif;
+              font-style: italic;
+              font-size: 1.15rem;
+            "
+            >aku pengen ngajakin kamu pergi makan.</strong
+          >
+        </p>
+        <p>
+          Bukan semata-mata karena lapar (ya, lapar juga sih). Tapi karena...
+          makan itu lebih enak kalau sama kamu. 🍽️❤️
+        </p>
+        <br />
+        <button class="bm" onclick="gs(2)">Lanjut yuk → 🌷</button>
+      </div>
+    </section>
+
+    <!-- S3 -->
+    <section id="s3">
+      <h2 class="it fi">Undangan Spesial 🍽️</h2>
+      <p class="is fi">...khusus buat kamu aja, ya~</p>
+      <div class="ics fi">
+        <div class="ic">
+          <span class="ico">📅</span>
+          <div class="lbl">Tanggal</div>
+          <div class="val">Sabtu,<br />10 Mei 2025</div>
+        </div>
+        <div class="ic">
+          <span class="ico">⏰</span>
+          <div class="lbl">Waktu</div>
+          <div class="val">18:30<br />(habis ashar)</div>
+        </div>
+        <div class="ic">
+          <span class="ico">📍</span>
+          <div class="lbl">Tempat</div>
+          <div class="val">Restoran<br />Favorit Kita 🌟</div>
+        </div>
+        <div class="ic">
+          <span class="ico">👗</span>
+          <div class="lbl">Dresscode</div>
+          <div class="val">Cantik &amp;<br />Nyaman aja 🌸</div>
+        </div>
+      </div>
+      <br /><br />
+      <button class="bm fi" onclick="gs(3)" style="margin-top: 1rem">
+        Gimana menurut kamu? 🥰
+      </button>
+    </section>
+
+    <!-- S4 -->
+    <section id="s4">
+      <h2 class="ct fi">Sooo... gimana? 🥺</h2>
+      <p class="cs fi">Jawab jujur ya, aku kuat kok 🤞 (bohong sih)</p>
+      <div class="cbs fi">
+        <button class="by" onclick="hy()">Mau banget ❤️</button>
+        <button class="bn" id="bn">Nggak dulu deh 🙈</button>
+      </div>
+      <p id="nc"></p>
+    </section>
+
+    <!-- S5 -->
+    <section id="s5">
+      <span class="fe">🎉</span>
+      <h2 class="ft fi">Yesss! Makasih ya! 🥳</h2>
+      <p class="fm fi">
+        Aku tunggu kehadiranmu dengan penuh harap dan sedikit deg-degan.<br />(Oke,
+        banyak deg-degannya.) 🫶
+      </p>
+      <div
+        class="fi"
+        style="font-size: 1.8rem; letter-spacing: 0.7rem; margin-bottom: 1.2rem"
+      >
+        🌸 💕 🌟 💕 🌸
+      </div>
+      <p
+        class="fi"
+        style="
+          font-family: &quot;Playfair Display&quot;, serif;
+          font-style: italic;
+          font-size: 1.15rem;
+          color: var(--tm);
+        "
+      >
+        "Sampai ketemu, jangan PHP ya. 😜"
+      </p>
+      <p class="fn fi">— Dari orang yang selalu mikirin kamu ❤️</p>
+      <button class="bm fi" onclick="lc()" style="margin-top: 1.8rem">
+        🎊 Rayain lagi dong!
+      </button>
+    </section>
+
+    <script>
+      // PARTICLES
+      const cv = document.getElementById("pc"),
+        cx = cv.getContext("2d");
+      function rsz() {
+        cv.width = window.innerWidth;
+        cv.height = window.innerHeight;
+      }
+      rsz();
+      window.addEventListener("resize", rsz);
+      const EM = ["💕", "🌸", "✨", "💫", "🌷", "💖", "⭐"];
+      class P {
+        constructor() {
+          this.r(true);
+        }
+        r(init = false) {
+          this.x = Math.random() * cv.width;
+          this.y = init ? Math.random() * cv.height : cv.height + 20;
+          this.e = EM[Math.floor(Math.random() * EM.length)];
+          this.sz = 12 + Math.random() * 13;
+          this.sy = -(0.3 + Math.random() * 0.65);
+          this.sx = (Math.random() - 0.5) * 0.4;
+          this.op = 0.35 + Math.random() * 0.4;
+          this.wb = Math.random() * Math.PI * 2;
+          this.ws = 0.01 + Math.random() * 0.02;
+        }
+        u() {
+          this.y += this.sy;
+          this.wb += this.ws;
+          this.x += Math.sin(this.wb) * 0.5 + this.sx;
+          if (this.y < -30) this.r();
+        }
+        d() {
+          cx.save();
+          cx.globalAlpha = this.op;
+          cx.font = `${this.sz}px serif`;
+          cx.fillText(this.e, this.x, this.y);
+          cx.restore();
+        }
+      }
+      const ps = [];
+      for (let i = 0; i < 20; i++) ps.push(new P());
+      function ap() {
+        cx.clearRect(0, 0, cv.width, cv.height);
+        ps.forEach((p) => {
+          p.u();
+          p.d();
+        });
+        requestAnimationFrame(ap);
+      }
+      ap();
+
+      // TYPING
+      const tt = document.getElementById("tt");
+      const ts = [
+        "aku ada sesuatu nih... 🥺",
+        "penting banget, serius deh.",
+        "baca dulu ya, jangan di-skip! 😤",
+        "jangan close dulu pleaseee 🙏",
+      ];
+      let ti = 0,
+        ci = 0,
+        dl = false;
+      function tn() {
+        const c = ts[ti];
+        if (!dl) {
+          tt.textContent = c.slice(0, ++ci);
+          if (ci === c.length) {
+            dl = true;
+            setTimeout(tn, 1800);
+            return;
+          }
+          setTimeout(tn, 65);
+        } else {
+          tt.textContent = c.slice(0, --ci);
+          if (ci === 0) {
+            dl = false;
+            ti = (ti + 1) % ts.length;
+            setTimeout(tn, 400);
+            return;
+          }
+          setTimeout(tn, 38);
+        }
+      }
+      setTimeout(tn, 800);
+
+      // SCREENS
+      const scr = ["s1", "s2", "s3", "s4", "s5"];
+      let cur = 0;
+      function gs(i) {
+        scr.forEach((id) => {
+          const el = document.getElementById(id);
+          el.style.display = "none";
+          el.style.opacity = "0";
+        });
+        const tg = document.getElementById(scr[i]);
+        tg.style.display = "flex";
+        tg.style.transition = "opacity .55s ease";
+        setTimeout(() => {
+          tg.style.opacity = "1";
+          tg.querySelectorAll(".fi").forEach((el, j) =>
+            setTimeout(() => el.classList.add("v"), j * 120),
+          );
+        }, 30);
+        cur = i;
+        ud();
+        if (i === 1 && !ast) {
+          tra();
+          ast = true;
+        }
+      }
+      function ud() {
+        document
+          .querySelectorAll(".dot")
+          .forEach((d, i) => d.classList.toggle("active", i === cur));
+      }
+      document.querySelectorAll(".dot").forEach((d) =>
+        d.addEventListener("click", () => {
+          const si = parseInt(d.dataset.s);
+          if (si <= cur) gs(si);
+        }),
+      );
+      gs(0);
+
+      // NO BUTTON
+      let nhc = 0,
+        ast = false;
+      const nc = [
+        "Nggak dulu deh 🙈",
+        "Beneran nggak? 😢",
+        "Yakin banget nih? 🥺",
+        "Coba dipikir lagi... 🤔",
+        "Masa sih nggak mau? 😭",
+        "Aku sedih tau 😿",
+        "OK fine... ngambek ya 😤",
+      ];
+      const bn = document.getElementById("bn");
+      function mvbn() {
+        const vw = window.innerWidth - 200,
+          vh = window.innerHeight - 80;
+        const rx = 40 + Math.random() * Math.max(vw, 40);
+        const ry = 40 + Math.random() * Math.max(vh, 40);
+        bn.style.position = "fixed";
+        bn.style.left = rx + "px";
+        bn.style.top = ry + "px";
+        bn.style.zIndex = "500";
+        nhc = Math.min(nhc + 1, nc.length - 1);
+        bn.textContent = nc[nhc];
+        if (nhc > 0)
+          document.getElementById("nc").textContent =
+            `(Udah ${nhc}x kabur... aku kira kamu mau 😏)`;
+      }
+      bn.addEventListener("mouseover", mvbn);
+      bn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        mvbn();
+      });
+
+      function hy() {
+        pc2();
+        lc();
+        setTimeout(() => gs(4), 600);
+      }
+
+      // CONFETTI
+      function lc() {
+        const sh = ["💕", "🌸", "✨", "💖", "🎉", "🌷", "⭐", "🎊"],
+          cl = [
+            "#f9a8c9",
+            "#ffd6c0",
+            "#e8d5f5",
+            "#f4a07a",
+            "#e96b9b",
+            "#b48edd",
+          ];
+        for (let i = 0; i < 85; i++)
+          setTimeout(() => {
+            const el = document.createElement("div");
+            el.className = "cp";
+            if (Math.random() > 0.35) {
+              el.textContent = sh[Math.floor(Math.random() * sh.length)];
+              el.style.cssText = `position:fixed;font-size:${14 + Math.random() * 22}px;left:${Math.random() * 100}vw;top:-30px;pointer-events:none;z-index:9999;animation:cf ${1.5 + Math.random() * 2}s linear forwards;`;
+            } else {
+              el.style.cssText = `background:${cl[Math.floor(Math.random() * cl.length)]};position:fixed;left:${Math.random() * 100}vw;top:-10px;width:${7 + Math.random() * 10}px;height:${7 + Math.random() * 10}px;border-radius:${Math.random() > 0.5 ? "50%" : "3px"};pointer-events:none;z-index:9999;animation:cf ${1.5 + Math.random() * 2}s linear forwards;`;
+            }
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+          }, i * 22);
+      }
+
+      // DARK MODE
+      let dk = false;
+      document.getElementById("tb").addEventListener("click", () => {
+        dk = !dk;
+        document.body.style.background = dk ? "#1e0e1a" : "";
+        document.getElementById("tb").textContent = dk ? "☀️" : "🌙";
+        pc2();
+      });
+
+      // EASTER EGG
+      let ec = 0;
+      document.getElementById("et").addEventListener("click", () => {
+        ec++;
+        if (ec >= 3) {
+          const e = document.getElementById("ee");
+          e.style.display = "block";
+          setTimeout(() => {
+            e.style.display = "none";
+            ec = 0;
+          }, 4000);
+        }
+      });
+
+      // MOUSE TRAIL
+      let mtt = 0;
+      document.addEventListener("mousemove", (e) => {
+        if (Date.now() - mtt < 90) return;
+        mtt = Date.now();
+        const s = document.createElement("span");
+        s.textContent = Math.random() > 0.5 ? "✨" : "💕";
+        s.style.cssText = `position:fixed;left:${e.clientX - 8}px;top:${e.clientY - 8}px;font-size:13px;pointer-events:none;z-index:9998;opacity:1;transition:opacity .6s,transform .6s;`;
+        document.body.appendChild(s);
+        requestAnimationFrame(() => {
+          s.style.opacity = "0";
+          s.style.transform = "translateY(-18px)";
+        });
+        setTimeout(() => s.remove(), 700);
+      });
+
+      // AUDIO
+      let ac = null,
+        mo = false;
+      function tra() {
+        ac = new (window.AudioContext || window.webkitAudioContext)();
+        pam();
+        mo = true;
+        document.getElementById("ab").textContent = "🎵 ON";
+      }
+      function pam() {
+        const m = ac.createGain();
+        m.gain.setValueAtTime(0.05, ac.currentTime);
+        m.connect(ac.destination);
+        const rv = ac.createConvolver();
+        const bl = ac.sampleRate * 2;
+        const b = ac.createBuffer(2, bl, ac.sampleRate);
+        for (let c = 0; c < 2; c++) {
+          const d = b.getChannelData(c);
+          for (let i = 0; i < bl; i++)
+            d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bl, 2);
+        }
+        rv.buffer = b;
+        rv.connect(m);
+        const nt = [261.6, 329.6, 392, 523.2, 659.3];
+        function n(f, t, d) {
+          const o = ac.createOscillator(),
+            g = ac.createGain();
+          o.type = "sine";
+          o.frequency.setValueAtTime(f, t);
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.32, t + 0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, t + d);
+          o.connect(g);
+          g.connect(rv);
+          o.start(t);
+          o.stop(t + d);
+        }
+        function lp(st) {
+          const bt = 0.65;
+          [0, 2, 1, 4, 3, 2, 0, 3].forEach((ni, i) => {
+            n(nt[ni], st + i * bt, bt * 1.3);
+            n(nt[ni] / 2, st + i * bt, bt * 2);
+          });
+          const l = 8 * bt;
+          setTimeout(
+            () => {
+              if (mo && ac) lp(ac.currentTime + 0.05);
+            },
+            (l - 0.4) * 1000,
+          );
+        }
+        lp(ac.currentTime + 0.1);
+      }
+      document.getElementById("ab").addEventListener("click", () => {
+        if (!ac) {
+          tra();
+        } else if (mo) {
+          ac.suspend();
+          mo = false;
+          document.getElementById("ab").textContent = "🎵 OFF";
+        } else {
+          ac.resume();
+          mo = true;
+          document.getElementById("ab").textContent = "🎵 ON";
+        }
+        pc2();
+      });
+
+      // CLICK SOUND
+      function pc2() {
+        try {
+          const c = new (window.AudioContext || window.webkitAudioContext)(),
+            o = c.createOscillator(),
+            g = c.createGain();
+          o.type = "sine";
+          o.frequency.setValueAtTime(880, c.currentTime);
+          o.frequency.exponentialRampToValueAtTime(440, c.currentTime + 0.15);
+          g.gain.setValueAtTime(0.1, c.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.18);
+          o.connect(g);
+          g.connect(c.destination);
+          o.start();
+          o.stop(c.currentTime + 0.18);
+        } catch (_) {}
+      }
+      document.querySelectorAll("button").forEach((b) => {
+        if (b.id !== "bn") b.addEventListener("click", () => pc2());
+      });
+    </script>
+  </body>
+</html>
